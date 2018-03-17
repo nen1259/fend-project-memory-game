@@ -27,10 +27,31 @@
  */
 shuffle(cards);
 
+const deckOfCards = document.querySelector(".deck");
+
 cards.forEach(function (card,index){
   console.log(index);
   console.log(card);
+  let listItem = document.createElement("LI");
+  let item = document.createElement("I");
+  listItem.appendChild(item);
+  listItem.classList.add("card");
+  //listItem.classList.add("open");
+  //listItem.classList.add("show");
+
+  item.classList.add("fa");
+  item.classList.add(cards[index]);
+  deckOfCards.appendChild(listItem);
+
+  listItem.addEventListener('click',respondToTheClick);
 });
+
+function respondToTheClick(evt){
+  
+  let clickedCard = evt.target;
+  clickedCard.classList.add("show");
+}
+
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
