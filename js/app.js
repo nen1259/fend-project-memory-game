@@ -1,6 +1,9 @@
 /*
  * Create a list that holds all of your cards
  */
+
+ const deckOfCards = document.querySelector(".deck");
+
  let cards = ['fa-diamond',
                 'fa-paper-plane-o',
                 'fa-anchor',
@@ -26,28 +29,39 @@
  *   - add each card's HTML to the page
  */
 shuffle(cards);
+resetBoard();
 
-const deckOfCards = document.querySelector(".deck");
+function resetBoard(){
 
-cards.forEach(function (card,index){
-  console.log(index);
-  console.log(card);
-  let listItem = document.createElement("LI");
-  let item = document.createElement("I");
-  listItem.appendChild(item);
-  listItem.classList.add("card");
-  //listItem.classList.add("open");
-  //listItem.classList.add("show");
+  // clear all child nodes from deckOfCards
+  while (deckOfCards.firstChild) {
+  deckOfCards.removeChild(deckOfCards.firstChild);
+  }
 
-  item.classList.add("fa");
-  item.classList.add(cards[index]);
-  deckOfCards.appendChild(listItem);
+  shuffle(cards);
 
-  listItem.addEventListener('click',respondToTheClick);
-});
+  //setup the deskofcards
+  cards.forEach(function (card,index){
+    console.log(index);
+    console.log(card);
+    let listItem = document.createElement("LI");
+    let item = document.createElement("I");
+    listItem.appendChild(item);
+    listItem.classList.add("card");
+    //listItem.classList.add("open");
+    //listItem.classList.add("show");
+
+    item.classList.add("fa");
+    item.classList.add(cards[index]);
+    deckOfCards.appendChild(listItem);
+
+    listItem.addEventListener('click',respondToTheClick);
+  });
+
+}
 
 function respondToTheClick(evt){
-  
+
   let clickedCard = evt.target;
   clickedCard.classList.add("show");
 }
@@ -65,9 +79,59 @@ function shuffle(array) {
         array[randomIndex] = temporaryValue;
     }
 
+    console.log("shuffle()");
     return array;
 }
+startTimer();
 
+// Clock settings
+const timerElement = document.getElementById('clock');
+let seconds = 0;
+let minutes = 0;
+let hours = 0;
+var timer;
+
+function resetTimer(){
+  seconds = 0;
+  minutes = 0;
+  hours = 0;
+}
+function add(){
+
+  seconds++;
+  if(seconds >= 60 ){
+    seconds = 0;
+    minutes++;
+    if(minutes >= 60){
+      minutes = 0;
+      hours++;
+    }
+  }
+
+  // format the clock
+  timerElement.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00")
+                              + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00")
+                              + ":" + (seconds > 9 ? seconds : "0" + seconds);
+  //timerElement.textContent = hours + ":" + minutes +":" + seconds;
+  console.log(seconds);
+  startTimer();
+}
+function startTimer(){
+  timer = setTimeout(add, 1000);
+}
+
+function stopTimer(){
+  clearTimeout(timer);
+}
+
+const restartElement = document.querySelector(".restart");
+restartElement.onclick = function() {
+    console.log("here");
+    //stopTimer(timer);
+    resetTimer();
+    resetBoard();
+    shuffle(cards);
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:
