@@ -131,12 +131,14 @@ if (clickedCardCounter === 2){
   } else {
     console.log("No Match")
     //shake and cover set these back to hidden
+    
     for (let pairIDs of pairID) {
       console.log(pairIDs);
-      document.getElementById(pairIDs).classList.toggle("match");
+
       document.getElementById(pairIDs).classList.toggle("show");
-      document.getElementById(pairIDs).classList.toggle("match");
+
     }
+
   }
   clickedCardCounter = 0;
 console.log(clickedCardCounter);
