@@ -1,27 +1,48 @@
 /*
  * Create a list that holds all of your cards
  */
+let clickedCardCounter = 0;
+let pair = [];
+let pairPosition = [];
 
- const deckOfCards = document.querySelector(".deck");
+const deckOfCards = document.querySelector(".deck");
+
+ // let cards = ['fa-diamond',
+ //                'fa-paper-plane-o',
+ //                'fa-anchor',
+ //                'fa-bolt',
+ //                'fa-cube',
+ //                'fa-leaf',
+ //                'fa-bicycle',
+ //                'fa-bomb',
+ //                'fa-diamond',
+ //                'fa-paper-plane-o',
+ //                'fa-anchor',
+ //                'fa-bolt',
+ //                'fa-cube',
+ //                'fa-leaf',
+ //                'fa-bicycle',
+ //                'fa-bomb'
+ //              ];
+
 
  let cards = ['fa-diamond',
-                'fa-paper-plane-o',
-                'fa-anchor',
-                'fa-bolt',
-                'fa-cube',
-                'fa-leaf',
-                'fa-bicycle',
-                'fa-bomb',
+                'fa-diamond',
+                'fa-diamond',
                 'fa-diamond',
                 'fa-paper-plane-o',
-                'fa-anchor',
-                'fa-bolt',
-                'fa-cube',
-                'fa-leaf',
-                'fa-bicycle',
-                'fa-bomb'
+                'fa-paper-plane-o',
+                'fa-paper-plane-o',
+                'fa-paper-plane-o',
+                'fa-diamond',
+                'fa-diamond',
+                'fa-diamond',
+                'fa-diamond',
+                'fa-diamond',
+                'fa-diamond',
+                'fa-diamond',
+                'fa-diamond'
               ];
-
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -31,19 +52,20 @@
 shuffle(cards);
 resetBoard();
 
+
 function resetBoard(){
 
   // clear all child nodes from deckOfCards
   while (deckOfCards.firstChild) {
   deckOfCards.removeChild(deckOfCards.firstChild);
   }
-
+  clickedCardCounter = 0;
   shuffle(cards);
 
-  //setup the deskofcards
+  //setup the deckofcards
   cards.forEach(function (card,index){
-    console.log(index);
-    console.log(card);
+    //console.log(index);
+    //console.log(card);
     let listItem = document.createElement("LI");
     let item = document.createElement("I");
     listItem.appendChild(item);
@@ -62,8 +84,45 @@ function resetBoard(){
 
 function respondToTheClick(evt){
 
-  let clickedCard = evt.target;
+let clickedCard = evt.target;
+
+//clickedCard.classList.toggle("show");
+if(!clickedCard.classList.contains("show") && clickedCardCounter<2){
   clickedCard.classList.add("show");
+  console.log(clickedCard.classList);
+  //add the selected classList to the pair array
+  pair[clickedCardCounter] = clickedCard.children[0];
+  console.log("pair contents");
+  console.log(pair);
+  clickedCardCounter++;
+  console.log(clickedCardCounter);
+}
+if (clickedCardCounter === 2){
+  //check if we have a matched pair
+  // if we do reset clicked card counter and return
+  console.log("time to check if we're matched");
+  console.log("pair[0]");
+  console.log(pair[0]);
+  console.log("pair[1]");
+  console.log(pair[1]);
+
+  if (pair[0] === pair[1]){
+    console.log("we have a match");
+    console.log(pair.length);
+    pair.pop();
+    console.log(pair.length);
+    pair.pop();
+    console.log(pair.length);
+    console.log("pair[0]");
+    console.log(pair[0]);
+    console.log("pair[1]");
+    console.log(pair[1]);
+    clickedCardCounter = 0;
+    console.log(clickedCardCounter);
+  }
+console.log(clickedCardCounter);
+}
+
 }
 
 
@@ -113,7 +172,7 @@ function add(){
                               + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00")
                               + ":" + (seconds > 9 ? seconds : "0" + seconds);
   //timerElement.textContent = hours + ":" + minutes +":" + seconds;
-  console.log(seconds);
+  //console.log(seconds);
   startTimer();
 }
 function startTimer(){
@@ -130,7 +189,7 @@ restartElement.onclick = function() {
     //stopTimer(timer);
     resetTimer();
     resetBoard();
-    shuffle(cards);
+    //shuffle(cards);
 }
 
 /*
