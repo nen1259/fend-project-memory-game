@@ -66,7 +66,9 @@ function resetBoard(){
   cards.forEach(function (card,index){
     //console.log(index);
     //console.log(card);
+
     let listItem = document.createElement("LI");
+    listItem.id = "li_" + index;
     let item = document.createElement("I");
     listItem.appendChild(item);
     listItem.classList.add("card");
@@ -91,7 +93,7 @@ if(!clickedCard.classList.contains("show") && clickedCardCounter<2){
   clickedCard.classList.add("show");
   console.log(clickedCard.classList);
   //add the selected classList to the pair array
-  pair[clickedCardCounter] = clickedCard.children[0];
+  pair[clickedCardCounter] = clickedCard.children[0].classList;
   console.log("pair contents");
   console.log(pair);
   clickedCardCounter++;
@@ -106,7 +108,7 @@ if (clickedCardCounter === 2){
   console.log("pair[1]");
   console.log(pair[1]);
 
-  if (pair[0] === pair[1]){
+  if (pair[0].value === pair[1].value){
     console.log("we have a match");
     console.log(pair.length);
     pair.pop();
@@ -120,6 +122,7 @@ if (clickedCardCounter === 2){
     clickedCardCounter = 0;
     console.log(clickedCardCounter);
   }
+  clickedCardCounter = 0;
 console.log(clickedCardCounter);
 }
 
