@@ -131,14 +131,14 @@ if (clickedCardCounter === 2){
   } else {
     console.log("No Match")
     //shake and cover set these back to hidden
-    
-    for (let pairIDs of pairID) {
-      console.log(pairIDs);
 
-      document.getElementById(pairIDs).classList.toggle("show");
-
-    }
-
+    // for (let pairIDs of pairID) {
+    //   console.log(pairIDs);
+    //
+    //   document.getElementById(pairIDs).classList.toggle("show");
+    //
+    // }
+    startDelay();
   }
   clickedCardCounter = 0;
 console.log(clickedCardCounter);
@@ -211,6 +211,17 @@ restartElement.onclick = function() {
     resetTimer();
     resetBoard();
     //shuffle(cards);
+}
+
+function startDelay(){
+  timer = setTimeout(function(){
+    for (let pairIDs of pairID) {
+      console.log(pairIDs);
+
+      document.getElementById(pairIDs).classList.toggle("show");
+
+    }
+  },  100);
 }
 
 /*
