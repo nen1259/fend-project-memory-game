@@ -3,7 +3,7 @@
  */
 let clickedCardCounter = 0;
 let pair = [];
-let pairPosition = [];
+let pairID = [];
 
 const deckOfCards = document.querySelector(".deck");
 
@@ -91,9 +91,10 @@ let clickedCard = evt.target;
 //clickedCard.classList.toggle("show");
 if(!clickedCard.classList.contains("show") && clickedCardCounter<2){
   clickedCard.classList.add("show");
-  console.log(clickedCard.classList);
+  console.log(clickedCard.id);
   //add the selected classList to the pair array
   pair[clickedCardCounter] = clickedCard.children[0].classList;
+  pairID[clickedCardCounter] = clickedCard.id;
   console.log("pair contents");
   console.log(pair);
   clickedCardCounter++;
@@ -119,8 +120,23 @@ if (clickedCardCounter === 2){
     console.log(pair[0]);
     console.log("pair[1]");
     console.log(pair[1]);
-    clickedCardCounter = 0;
+    //clickedCardCounter = 0;
+    for (let pairIDs of pairID) {
+      console.log(pairIDs);
+
+      document.getElementById(pairIDs).classList.toggle("match");
+    }
     console.log(clickedCardCounter);
+
+  } else {
+    console.log("No Match")
+    //shake and cover set these back to hidden
+    for (let pairIDs of pairID) {
+      console.log(pairIDs);
+      document.getElementById(pairIDs).classList.toggle("match");
+      document.getElementById(pairIDs).classList.toggle("show");
+      document.getElementById(pairIDs).classList.toggle("match");
+    }
   }
   clickedCardCounter = 0;
 console.log(clickedCardCounter);
