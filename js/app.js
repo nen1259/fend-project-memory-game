@@ -2,8 +2,18 @@
  * Create a list that holds all of your cards
  */
 let clickedCardCounter = 0;
+let moves = 0;
 let pair = [];
 let pairID = [];
+let targetPairs = 8;
+let matchedPairs = 0;
+
+const timerElement = document.getElementById('clock');
+let seconds = 0;
+let minutes = 0;
+let hours = 0;
+var timer;
+
 
 const deckOfCards = document.querySelector(".deck");
 
@@ -60,21 +70,21 @@ function resetBoard(){
   deckOfCards.removeChild(deckOfCards.firstChild);
   }
   clickedCardCounter = 0;
+  moves = 0;
+  matchedPairs = 0;
+  document.querySelector(".moves").innerHTML = moves;
+  timerElement.textContent = "00:00:00";
+
   shuffle(cards);
 
-  //setup the deckofcards
-  cards.forEach(function (card,index){
-    //console.log(index);
-    //console.log(card);
+    //setup the deckofcards
+    cards.forEach(function (card,index){
 
     let listItem = document.createElement("LI");
     listItem.id = "li_" + index;
     let item = document.createElement("I");
     listItem.appendChild(item);
     listItem.classList.add("card");
-    //listItem.classList.add("open");
-    //listItem.classList.add("show");
-
     item.classList.add("fa");
     item.classList.add(cards[index]);
     deckOfCards.appendChild(listItem);
@@ -86,64 +96,47 @@ function resetBoard(){
 
 function respondToTheClick(evt){
 
-let clickedCard = evt.target;
+  let clickedCard = evt.target;
 
-//clickedCard.classList.toggle("show");
-if(!clickedCard.classList.contains("show") && clickedCardCounter<2){
-  clickedCard.classList.add("show");
-  console.log(clickedCard.id);
-  //add the selected classList to the pair array
-  pair[clickedCardCounter] = clickedCard.children[0].classList;
-  pairID[clickedCardCounter] = clickedCard.id;
-  console.log("pair contents");
-  console.log(pair);
-  clickedCardCounter++;
-  console.log(clickedCardCounter);
-}
-if (clickedCardCounter === 2){
-  //check if we have a matched pair
-  // if we do reset clicked card counter and return
-  console.log("time to check if we're matched");
-  console.log("pair[0]");
-  console.log(pair[0]);
-  console.log("pair[1]");
-  console.log(pair[1]);
-
-  if (pair[0].value === pair[1].value){
-    console.log("we have a match");
-    console.log(pair.length);
-    pair.pop();
-    console.log(pair.length);
-    pair.pop();
-    console.log(pair.length);
-    console.log("pair[0]");
-    console.log(pair[0]);
-    console.log("pair[1]");
-    console.log(pair[1]);
-    //clickedCardCounter = 0;
-    for (let pairIDs of pairID) {
-      console.log(pairIDs);
-
-      document.getElementById(pairIDs).classList.toggle("match");
-    }
-    console.log(clickedCardCounter);
-
-  } else {
-    console.log("No Match")
-    //shake and cover set these back to hidden
-
-    // for (let pairIDs of pairID) {
-    //   console.log(pairIDs);
-    //
-    //   document.getElementById(pairIDs).classList.toggle("show");
-    //
-    // }
-    startDelay();
+  //clickedCard.classList.toggle("show");
+  if(!clickedCard.classList.contains("show") && clickedCardCounter<2){
+    clickedCard.classList.add("show");
+    //add the selected classList to the pair array
+    pair[clickedCardCounter] = clickedCard.children[0].classList;
+    pairID[clickedCardCounter] = clickedCard.id;
+    clickedCardCounter++;
+    ++moves;
+    document.querySelector(".moves").innerHTML = moves;
   }
-  clickedCardCounter = 0;
-console.log(clickedCardCounter);
-}
 
+  if (clickedCardCounter === 2){
+    //check if we have a matched pair
+    // if we do reset clicked card counter, increment matchedPairs and return
+
+    if (pair[0].value === pair[1].value){
+      //remove elements from the pair array
+      pair.pop();
+      pair.pop();
+      matchedPairs++;
+      for (let pairIDs of pairID) {
+        document.getElementById(pairIDs).classList.toggle("match");
+      }
+      console.log(matchedPairs +"-" + targetPairs);
+
+      if(targetPairs===matchedPairs){
+        startDelay();
+        stopTimer();
+        console.log(timer);
+        //alert("Game Over " + timerElement.textContent);
+      }
+    } else {
+      console.log("No Match")
+      //start delay which set these cards back to hidden
+      startDelay();
+    }
+  clickedCardCounter = 0;
+  console.log(clickedCardCounter);
+  }
 }
 
 
@@ -165,11 +158,6 @@ function shuffle(array) {
 startTimer();
 
 // Clock settings
-const timerElement = document.getElementById('clock');
-let seconds = 0;
-let minutes = 0;
-let hours = 0;
-var timer;
 
 function resetTimer(){
   seconds = 0;
@@ -192,8 +180,6 @@ function add(){
   timerElement.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00")
                               + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00")
                               + ":" + (seconds > 9 ? seconds : "0" + seconds);
-  //timerElement.textContent = hours + ":" + minutes +":" + seconds;
-  //console.log(seconds);
   startTimer();
 }
 function startTimer(){
@@ -214,7 +200,7 @@ restartElement.onclick = function() {
 }
 
 function startDelay(){
-  timer = setTimeout(function(){
+  let delay = setTimeout(function(){
     for (let pairIDs of pairID) {
       console.log(pairIDs);
 
