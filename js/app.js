@@ -64,7 +64,7 @@ resetBoard();
 
 
 function resetBoard(){
-
+  stopTimer();
   // clear all child nodes from deckOfCards
   while (deckOfCards.firstChild) {
   deckOfCards.removeChild(deckOfCards.firstChild);
@@ -72,6 +72,7 @@ function resetBoard(){
   clickedCardCounter = 0;
   moves = 0;
   matchedPairs = 0;
+  document.querySelector(".deck").classList.remove("mismatch");
   document.querySelector(".moves").innerHTML = moves;
   timerElement.textContent = "00:00:00";
 
@@ -95,6 +96,10 @@ function resetBoard(){
 }
 
 function respondToTheClick(evt){
+
+  if(moves===0){
+    startTimer();
+  }
 
   let clickedCard = evt.target;
 
@@ -127,6 +132,7 @@ function respondToTheClick(evt){
         startDelay();
         stopTimer();
         console.log(timer);
+        document.querySelector(".deck").classList.add("mismatch");
         //alert("Game Over " + timerElement.textContent);
       }
     } else {
@@ -155,7 +161,7 @@ function shuffle(array) {
     console.log("shuffle()");
     return array;
 }
-startTimer();
+
 
 // Clock settings
 
