@@ -1,59 +1,41 @@
 /*
  * Create a list that holds all of your cards
  */
-let clickedCardCounter = 0;
-let moves = 0;
-let pair = [];
-let pairID = [];
-let targetPairs = 8;
-let matchedPairs = 0;
+let clickedCardCounter = 0; // to track each 'go'
+let moves = 0; //to keep track of total moves
+let pair = []; // to keep the class of the each pair
+let pairID = []; // to keep the element id of each pair
+let targetPairs = 8; // to keep a track of when a game is complete
+let matchedPairs = 0; // to track how many pairs are matched during a game
 
-const timerElement = document.getElementById('clock');
 let seconds = 0;
 let minutes = 0;
 let hours = 0;
 var timer;
 
-
+const timerElement = document.getElementById('clock');
 const deckOfCards = document.querySelector(".deck");
-
- // let cards = ['fa-diamond',
- //                'fa-paper-plane-o',
- //                'fa-anchor',
- //                'fa-bolt',
- //                'fa-cube',
- //                'fa-leaf',
- //                'fa-bicycle',
- //                'fa-bomb',
- //                'fa-diamond',
- //                'fa-paper-plane-o',
- //                'fa-anchor',
- //                'fa-bolt',
- //                'fa-cube',
- //                'fa-leaf',
- //                'fa-bicycle',
- //                'fa-bomb'
- //              ];
-
-
+const stars = document.querySelector(".stars")
  let cards = ['fa-diamond',
-                'fa-diamond',
-                'fa-diamond',
+                'fa-paper-plane-o',
+                'fa-anchor',
+                'fa-bolt',
+                'fa-cube',
+                'fa-leaf',
+                'fa-bicycle',
+                'fa-bomb',
                 'fa-diamond',
                 'fa-paper-plane-o',
-                'fa-paper-plane-o',
-                'fa-paper-plane-o',
-                'fa-paper-plane-o',
-                'fa-diamond',
-                'fa-diamond',
-                'fa-diamond',
-                'fa-diamond',
-                'fa-diamond',
-                'fa-diamond',
-                'fa-diamond',
-                'fa-diamond'
+                'fa-anchor',
+                'fa-bolt',
+                'fa-cube',
+                'fa-leaf',
+                'fa-bicycle',
+                'fa-bomb'
               ];
-/*
+
+
+ /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
@@ -65,14 +47,21 @@ resetBoard();
 
 function resetBoard(){
   stopTimer();
+
+  clickedCardCounter = 0;
+  moves = 0;
+  matchedPairs = 0;
+  // reset stars
+  stars.children[0].style.display="";
+  stars.children[1].style.display="";
+  stars.children[2].style.display="";
+
   // clear all child nodes from deckOfCards
   while (deckOfCards.firstChild) {
   deckOfCards.removeChild(deckOfCards.firstChild);
   }
-  clickedCardCounter = 0;
-  moves = 0;
-  matchedPairs = 0;
-  document.querySelector(".deck").classList.remove("mismatch");
+
+  document.querySelector(".deck").classList.remove("game-over");
   document.querySelector(".moves").innerHTML = moves;
   timerElement.textContent = "00:00:00";
 
@@ -100,8 +89,7 @@ function respondToTheClick(evt){
   if(moves===0){
     startTimer();
   }
-
-  let clickedCard = evt.target;
+    let clickedCard = evt.target;
 
   //clickedCard.classList.toggle("show");
   if(!clickedCard.classList.contains("show") && clickedCardCounter<2){
@@ -110,7 +98,15 @@ function respondToTheClick(evt){
     pair[clickedCardCounter] = clickedCard.children[0].classList;
     pairID[clickedCardCounter] = clickedCard.id;
     clickedCardCounter++;
-    ++moves;
+    moves++;
+    if(moves === 25 ){
+      stars.children[2].style.display="none";
+    } else if(moves === 30){
+      stars.children[1].style.display="none";
+    } else if(moves === 35){
+      stars.children[0].style.display="none";
+    }
+    //update moves taken
     document.querySelector(".moves").innerHTML = moves;
   }
 
@@ -126,22 +122,18 @@ function respondToTheClick(evt){
       for (let pairIDs of pairID) {
         document.getElementById(pairIDs).classList.toggle("match");
       }
-      console.log(matchedPairs +"-" + targetPairs);
 
-      if(targetPairs===matchedPairs){
+      //check if the game is over
+      if(targetPairs === matchedPairs){
         startDelay();
         stopTimer();
-        console.log(timer);
-        document.querySelector(".deck").classList.add("mismatch");
-        //alert("Game Over " + timerElement.textContent);
+        document.querySelector(".deck").classList.add("game-over");
       }
     } else {
-      console.log("No Match")
       //start delay which set these cards back to hidden
       startDelay();
     }
-  clickedCardCounter = 0;
-  console.log(clickedCardCounter);
+    clickedCardCounter = 0;
   }
 }
 
@@ -199,19 +191,14 @@ function stopTimer(){
 const restartElement = document.querySelector(".restart");
 restartElement.onclick = function() {
     console.log("here");
-    //stopTimer(timer);
     resetTimer();
     resetBoard();
-    //shuffle(cards);
 }
 
 function startDelay(){
   let delay = setTimeout(function(){
     for (let pairIDs of pairID) {
-      console.log(pairIDs);
-
       document.getElementById(pairIDs).classList.toggle("show");
-
     }
   },  100);
 }
