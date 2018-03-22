@@ -53,12 +53,14 @@ resetBoard();
 restartElement.onclick = restartGame;
 playAgainElement.onclick = restartGame;
 
+//function to restart the game
 function restartGame() {
     closeModal.click();
     resetTimer();
     resetBoard();
 }
 
+//function to reset the board
 function resetBoard(){
   stopTimer();
 
@@ -69,6 +71,7 @@ function resetBoard(){
   stars.children[0].style.display="";
   stars.children[1].style.display="";
   stars.children[2].style.display="";
+  starsAwarded = 3;
 
   // clear all child nodes from deckOfCards
   while (deckOfCards.firstChild) {
@@ -97,7 +100,7 @@ function resetBoard(){
   });
 
 }
-
+// respond to click event handler
 function respondToTheClick(evt){
 
   if(moves===0){
@@ -155,6 +158,7 @@ function respondToTheClick(evt){
   }
 }
 
+// function shows the modal popup
 function showModal(){
   modal.style.display = "block";
   document.getElementById("moveScore").textContent="Moves: " + moves;
@@ -186,12 +190,13 @@ function shuffle(array) {
 
 
 // Clock settings
-
 function resetTimer(){
   seconds = 0;
   minutes = 0;
   hours = 0;
 }
+
+//function to set the clock values
 function add(){
 
   seconds++;
@@ -210,14 +215,18 @@ function add(){
                               + ":" + (seconds > 9 ? seconds : "0" + seconds);
   startTimer();
 }
+
+// function to set the timer and start
 function startTimer(){
   timer = setTimeout(add, 1000);
 }
 
+// function to stop the timer
 function stopTimer(){
   clearTimeout(timer);
 }
 
+// timer to implement a delay, preventing cards from being hidden too quickly.
 function startDelay(){
   let delay = setTimeout(function(){
     for (let pairIDs of pairID) {
