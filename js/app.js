@@ -13,9 +13,15 @@ let minutes = 0;
 let hours = 0;
 var timer;
 
+let starsAwarded = 3;
+const modal = document.getElementById('gameOverModal');
 const timerElement = document.getElementById('clock');
 const deckOfCards = document.querySelector(".deck");
-const stars = document.querySelector(".stars")
+const stars = document.querySelector(".stars");
+const closeModal = document.querySelector(".close");
+const restartElement = document.querySelector(".restart");
+const playAgainElement = document.getElementById("playAgain");
+
  let cards = ['fa-diamond',
                 'fa-paper-plane-o',
                 'fa-anchor',
@@ -44,6 +50,14 @@ const stars = document.querySelector(".stars")
 shuffle(cards);
 resetBoard();
 
+restartElement.onclick = restartGame;
+playAgainElement.onclick = restartGame;
+
+function restartGame() {
+    closeModal.click();
+    resetTimer();
+    resetBoard();
+}
 
 function resetBoard(){
   stopTimer();
@@ -101,10 +115,13 @@ function respondToTheClick(evt){
     moves++;
     if(moves === 25 ){
       stars.children[2].style.display="none";
+      starsAwarded--;
     } else if(moves === 30){
       stars.children[1].style.display="none";
+      starsAwarded--;
     } else if(moves === 35){
       stars.children[0].style.display="none";
+      starsAwarded--;
     }
     //update moves taken
     document.querySelector(".moves").innerHTML = moves;
@@ -128,6 +145,7 @@ function respondToTheClick(evt){
         startDelay();
         stopTimer();
         document.querySelector(".deck").classList.add("game-over");
+        showModal();
       }
     } else {
       //start delay which set these cards back to hidden
@@ -137,7 +155,20 @@ function respondToTheClick(evt){
   }
 }
 
+function showModal(){
+  modal.style.display = "block";
+  document.getElementById("moveScore").textContent="Moves: " + moves;
+  document.getElementById("timeScore").textContent="Time: " + timerElement.textContent;
+  if (starsAwarded === 0) {
+    document.getElementById("starScore").textContent = "None :("
+  }
+  document.getElementById("starScore").textContent="Stars: " + starsAwarded;
 
+}
+//handle the modal close
+closeModal.onclick = function() {
+  modal.style.display = "none";
+}
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -150,7 +181,6 @@ function shuffle(array) {
         array[randomIndex] = temporaryValue;
     }
 
-    console.log("shuffle()");
     return array;
 }
 
@@ -186,13 +216,6 @@ function startTimer(){
 
 function stopTimer(){
   clearTimeout(timer);
-}
-
-const restartElement = document.querySelector(".restart");
-restartElement.onclick = function() {
-    console.log("here");
-    resetTimer();
-    resetBoard();
 }
 
 function startDelay(){
