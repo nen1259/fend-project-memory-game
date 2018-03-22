@@ -122,9 +122,9 @@ function respondToTheClick(evt){
     } else if(moves === 30){
       stars.children[1].style.display="none";
       starsAwarded--;
-    } else if(moves === 35){
-      stars.children[0].style.display="none";
-      starsAwarded--;
+    // } else if(moves === 35){
+    //   stars.children[0].style.display="none";
+    //   starsAwarded--;
     }
     //update moves taken
     document.querySelector(".moves").innerHTML = moves;
