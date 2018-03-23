@@ -7,7 +7,7 @@ let pair = []; // to keep the class of the each pair
 let pairID = []; // to keep the element id of each pair
 let targetPairs = 8; // to keep a track of when a game is complete
 let matchedPairs = 0; // to track how many pairs are matched during a game
-
+let goes = 0;
 let seconds = 0;
 let minutes = 0;
 let hours = 0;
@@ -67,6 +67,7 @@ function resetBoard(){
   clickedCardCounter = 0;
   moves = 0;
   matchedPairs = 0;
+  goes = 0;
   // reset stars
   stars.children[0].style.display="";
   stars.children[1].style.display="";
@@ -79,7 +80,7 @@ function resetBoard(){
   }
 
   document.querySelector(".deck").classList.remove("game-over");
-  document.querySelector(".moves").innerHTML = moves;
+  document.querySelector(".moves").innerHTML = goes;
   timerElement.textContent = "00:00:00";
 
   shuffle(cards);
@@ -115,8 +116,11 @@ function respondToTheClick(evt){
     pair[clickedCardCounter] = clickedCard.children[0].classList;
     pairID[clickedCardCounter] = clickedCard.id;
     clickedCardCounter++;
-    moves++;
-    if(moves === 25 ){
+    moves++
+    if((moves % 2) === 0){
+      goes++;
+    }
+    if(moves === 26 ){
       stars.children[2].style.display="none";
       starsAwarded--;
     } else if(moves === 30){
@@ -127,7 +131,7 @@ function respondToTheClick(evt){
     //   starsAwarded--;
     }
     //update moves taken
-    document.querySelector(".moves").innerHTML = moves;
+    document.querySelector(".moves").innerHTML = goes;
   }
 
   if (clickedCardCounter === 2){
@@ -161,7 +165,7 @@ function respondToTheClick(evt){
 // function shows the modal popup
 function showModal(){
   modal.style.display = "block";
-  document.getElementById("moveScore").textContent="Moves: " + moves;
+  document.getElementById("moveScore").textContent="Moves: " + goes;
   document.getElementById("timeScore").textContent="Time: " + timerElement.textContent;
   if (starsAwarded === 0) {
     document.getElementById("starScore").textContent = "None :("
